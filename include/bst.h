@@ -2,58 +2,69 @@
 #ifndef INCLUDE_BST_H_
 #define INCLUDE_BST_H_
 #include <algorithm>
+#include <string>
+template<typename T>
+struct Node {
+    T key;
+    Node* right, * left;
+    int count;
+    explicit Node(T k) : key(k), count(1), left(nullptr), right(nullptr) {}
+};
 template<typename T>
 class BST {
-private:
-    struct Node {
-        T value;
-        Node* left, * right;
-        int count;
-        explicit Node(T value) : value(value), count(1), left(nullptr), right(nullptr) {}
-    };
-
-public:
-    Node* roottree;
-    BST() : roottree(nullptr) {}
-    int search(T value) {
-        return searchNode(roottree, value);
+ private:
+    Node<T>* tree;
+    int getHeight(Node<T>* p) {
+        if (p == nullptr)
+            return 0;
+        int hright = getHeight(p->right);
+        int hleft = getHeight(p->left);
+        return 1 + std::max(hright, hleft);
+    }
+    Node<T>* insert(Node<T>* p, T k) {
+        if (p == nullptr) {
+            p = new Node<T>(k);
+        } else if (p->key > k) {
+            p->left = insert(p->left, k);
+        } else if (p->key < k) {
+            p->right = insert(p->right, k);
+        } else {
+            p->count++;
+        }
+        return p;
+    }
+    int findVal(Node<T>* p, T k) {
+        if (p->key == k)
+            return p->count;
+        else if (p->key < k)
+            return findVal(p->right, k);
+        else if (p->key > k)
+            return findVal(p->left, k);
+        else
+            return 0;
+    }
+    void deleteTree(Node<T>* p) {
+        if (p == nullptr)
+            return;
+        deleteTree(p->left);
+        deleteTree(p->right);
+        delete p;
+        p = nullptr;
+    }
+    
+ public:
+    BST() : tree(nullptr) {}
+    void insert(T k) {
+        tree = insert(tree, k);
+    }
+    int search(T k) {
+        return findVal(tree, k);
     }
     int depth() {
-        return getDepth(roottree) - 1;
+        return getHeight(tree) - 1;
     }
-    int searchNode(Node* roottree, T value) {
-        if (!roottree)
-            return 0;
-        if (value == roottree->value)
-            return roottree->count;
-        if (value < roottree->value)
-            return searchNode(roottree->left, value);
-        else
-            return searchNode(roottree->right, value);
-    }
-    void add(T value) {
-        roottree = insertWord(roottree, value);
-    }
-    int getDepth(Node* root) {
-        if (root)
-            return std::max(getDepth(root->left), getDepth(root->right) + 1);
-        else
-            return 0;
-    }
-    Node* insertWord(Node* pointer, T word) {
-        if (pointer == nullptr) {
-            pointer = new Node(word);
-        }
-        else if (pointer->value == word) {
-            pointer->count++;
-        }
-        else if (pointer->value < word) {
-            pointer->right = insertWord(pointer->right, word);
-        }
-        else if (pointer->value > word) {
-            pointer->left = insertWord(pointer->left, word);
-        }
-        return pointer;
+    ~BST() {
+        deleteTree(tree);
     }
 };
 #endif  // INCLUDE_BST_H_
