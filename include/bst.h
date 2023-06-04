@@ -44,14 +44,14 @@ public:
         if (pointer == nullptr) {
             pointer = new Node(word);
         }
+        else if (pointer->value == word) {
+            pointer->count++;
+        }
         else if (pointer->value < word) {
             pointer->right = insertWord(pointer->right, word);
         }
         else if (pointer->value > word) {
             pointer->left = insertWord(pointer->left, word);
-        }
-        else if (pointer->value == word) {
-            pointer->count++;
         }
         return pointer;
     }
