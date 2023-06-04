@@ -5,8 +5,6 @@
 #include  <cstdlib>
 #include  "bst.h"
 
-
-
 BST<std::string> makeTree(const char* filename) {
     std::string word;
     BST<std::string> tree;
