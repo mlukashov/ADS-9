@@ -51,7 +51,7 @@ class BST {
         delete p;
         p = nullptr;
     }
- 
+
  public:
     BST() : tree(nullptr) {}
     void insert(T k) {
