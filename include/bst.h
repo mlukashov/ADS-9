@@ -4,7 +4,7 @@
 #include <algorithm>
 template<typename T>
 class BST {
-private:
+ private:
     struct Node {
         T value;
         Node* left, * right;
@@ -12,7 +12,7 @@ private:
         explicit Node(T value) : value(value), count(1), left(nullptr), right(nullptr) {}
     };
 
-public:
+ public:
     Node* roottree;
     BST() : roottree(nullptr) {}
     int search(T value) {
@@ -43,14 +43,11 @@ public:
     Node* insertWord(Node* pointer, T word) {
         if (pointer == nullptr) {
             pointer = new Node(word);
-        }
-         else if (pointer->value == word) {
+        } else if (pointer->value == word) {
             pointer->count++;
-        }
-        else if (pointer->value < word) {
+        } else if (pointer->value < word) {
             pointer->right = insertWord(pointer->right, word);
-        }
-        else if (pointer->value > word) {
+        } else if (pointer->value > word) {
             pointer->left = insertWord(pointer->left, word);
         }
         return pointer;
