@@ -36,7 +36,7 @@ public:
     }
     int getDepth(Node* root) {
         if (root)
-            return std::max(getDepth(root->left), 1 + getDepth(root->right));
+            return std::max(getDepth(root->left), getDepth(root->right) + 1);
         else
             return 0;
     }
